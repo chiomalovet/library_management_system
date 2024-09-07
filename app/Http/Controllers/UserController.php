@@ -60,7 +60,7 @@ class UserController extends Controller
          ]);
          return response()->json([
             "status" => true,
-            'message'=> 'Book created successfully',
+            'message'=> 'User created successfully',
             // 'data' => new UserResource($users),
             "token" => $users->createToken("API TOKEN")->plainTextToken
          ], 201);
@@ -105,12 +105,12 @@ class UserController extends Controller
         $id->delete();
 
         return response()->json([
-            'message'=> 'Book Deleted successfully',
+            'message'=> 'User Deleted successfully',
             'data' =>new UserResource($id)
          ], 200);
     }
 
-    public function login(Request $request)
+    public function loginUser(Request $request)
     {
         try{
       $validator =validator::make($request->all(),

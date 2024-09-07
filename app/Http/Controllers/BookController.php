@@ -13,6 +13,8 @@ class BookController extends Controller
         $books = Book::get(); 
         if($books->count() > 0)
         {
+        //    return BookResource::collection($books);
+           $books = Book::paginate(10);
            return BookResource::collection($books);
         }else
         {
@@ -90,4 +92,19 @@ class BookController extends Controller
             'data' =>new BookResource($id)
          ], 200);
     }
+
+    // Search books by title, author, or ISBN
+    public function search(Request $request)
+    {
+        $query = $request->input('query');  // Get the search query from the request
+
+        // Query the books table, search by title, author, or ISBN
+        $books = Book::where('title', 'LIKE', "%{$query}%")
+                    ->orWhere('author', 'LIKE', "%{$query}%")
+                    ->orWhere('isbn', 'LIKE', "%{$query}%")
+                    ->get();
+
+        return response()->json($books);
+    }
+
 }

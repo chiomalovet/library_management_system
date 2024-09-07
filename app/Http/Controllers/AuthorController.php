@@ -13,6 +13,7 @@ class AuthorController extends Controller
         $authors = Author::get(); 
         if($authors->count() > 0)
         {
+            $authors = Author::paginate(10);
            return AuthorResource::collection($authors);
         }else
         {
@@ -47,7 +48,11 @@ class AuthorController extends Controller
           ], 422);
          }
 
-         $authors= Author::create($validator);
+         $authors= Author::create([
+            'name' => $request->input('name'),
+            'bio' => $request->input('bio'),
+            'birthdate' => $request->input('birthdate')
+         ]);
          return response()->json([
             'message'=> 'Author created successfully',
             'data' => new AuthorResource($authors)
